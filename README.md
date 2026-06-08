@@ -1,5 +1,7 @@
 # Mudati
-#مُدّتي
+# مُدّتي
+
+
 An iOS app that helps users track subscriptions and fixed monthly commitments.
 
 ## Features
