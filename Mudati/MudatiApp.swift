@@ -10,23 +10,19 @@ import SwiftData
 
 @main
 struct MudatiApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if hasSeenOnboarding {
+                HomeView()
+                    .onAppear {
+                        NotificationService.shared.requestPermission()
+                    }
+            } else {
+                OnboardingView()
+            }
         }
-        .modelContainer(sharedModelContainer)
-    }
+        .modelContainer(for: [Subscription.self, FixedCommitment.self])    }
 }
